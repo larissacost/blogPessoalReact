@@ -6,6 +6,7 @@ import useLocalStorage from 'react-use-localstorage';
 
 import Tema from '../../../models/Tema';
 import './ListaTema.css';
+import { busca } from '../../../services/Service';
 
 function ListaTema() {
 
@@ -30,7 +31,7 @@ function ListaTema() {
 
   useEffect(() => {
     getTema()
-  }, [temas,length])
+  }, [temas.length])
 
   return (
     <>
