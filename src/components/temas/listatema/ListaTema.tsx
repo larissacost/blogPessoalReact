@@ -1,27 +1,29 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
+import React, {useState, useEffect} from 'react'
+import { Link } from 'react-router-dom'
 import { Box, Card, CardActions, CardContent, Button, Typography } from '@material-ui/core';
-import useLocalStorage from 'react-use-localstorage';
-
 import Tema from '../../../models/Tema';
 import './ListaTema.css';
+import {useHistory} from 'react-router-dom';
 import { busca } from '../../../services/Service';
+import { useSelector } from 'react-redux';
+import { TokenState } from '../../../store/tokens/tokensReducer';
 
 function ListaTema() {
-
-  const [temas,setTemas] = useState <Tema[]>([])
-  const [token,setToken] = useLocalStorage('token');
+  const [temas, setTemas] = useState<Tema[]>([])
   let history = useHistory();
+  const token = useSelector<TokenState, TokenState["tokens"]>(
+    (state) => state.tokens
+  );
 
-  useEffect(() => {
+  useEffect(()=>{
     if(token == ''){
       alert("Você precisa estar logado")
-      history.push("login")
+      history.push("/login")
     }
   }, [token])
 
-  async function getTema() {
+
+  async function getTema(){
     await busca("/tema", setTemas, {
       headers: {
         'Authorization': token
@@ -29,7 +31,8 @@ function ListaTema() {
     })
   }
 
-  useEffect(() => {
+
+  useEffect(()=>{
     getTema()
   }, [temas.length])
 
@@ -44,7 +47,7 @@ function ListaTema() {
               Tema
             </Typography>
             <Typography variant="h5" component="h2">
-              {tema.descricao}
+             {tema.descricao}
             </Typography>
           </CardContent>
           <CardActions>
@@ -69,7 +72,7 @@ function ListaTema() {
         </Card>
       </Box>
       ))
-    }
+      }
     </>
   );
 }
